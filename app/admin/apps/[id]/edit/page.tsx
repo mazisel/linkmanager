@@ -8,6 +8,7 @@ export default function EditApp({ params }: { params: Promise<{ id: string }> })
     const { id } = use(params);
     const [formData, setFormData] = useState({
         name: '',
+        description: '',
         slug: '',
         logoUrl: '',
         androidUrl: '',
@@ -25,6 +26,7 @@ export default function EditApp({ params }: { params: Promise<{ id: string }> })
                 const data = await res.json();
                 setFormData({
                     name: data.name,
+                    description: data.description || '',
                     slug: data.slug,
                     logoUrl: data.logoUrl || '',
                     androidUrl: data.androidUrl || '',
@@ -81,6 +83,16 @@ export default function EditApp({ params }: { params: Promise<{ id: string }> })
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Description (Optional)</label>
+                    <textarea
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black h-24"
+                        placeholder="Enter a brief description of your app..."
+                        value={formData.description}
+                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     />
                 </div>
 
