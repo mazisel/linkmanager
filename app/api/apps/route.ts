@@ -36,7 +36,7 @@ export async function POST(request: Request) {
         const { name, slug, description, androidUrl, iosUrl, fallbackUrl, logoUrl } = body;
 
         // Basic validation
-        if (!name || !slug || !androidUrl || !iosUrl) {
+        if (!name || !slug) {
             return NextResponse.json(
                 { error: 'Missing required fields' },
                 { status: 400 }
