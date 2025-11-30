@@ -59,7 +59,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/start.sh ./start.sh
 RUN chmod +x start.sh
 
-USER nextjs
+# USER nextjs
 
 EXPOSE 4000
 
