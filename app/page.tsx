@@ -110,7 +110,6 @@ export default async function ShowcasePage() {
                                         href={app.iosUrl}
                                         className="block w-full py-3 px-4 bg-white/10 border border-white/20 text-white rounded-xl font-bold text-center hover:bg-white hover:text-black transition-all duration-300 flex items-center justify-center gap-3 group/btn"
                                     >
-                                        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.74 1.18 0 2.45-1.62 4.37-1.54 1.81.08 3.2 1.04 4.1 2.46-3.63 1.92-3.05 7.49 1.15 9.23-.72 1.52-1.8 3.48-4.7 2.08zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" /></svg>
                                         <span>App Store</span>
                                     </a>
                                 )}
@@ -119,7 +118,6 @@ export default async function ShowcasePage() {
                                         href={app.androidUrl}
                                         className="block w-full py-3 px-4 bg-white/10 border border-white/20 text-white rounded-xl font-bold text-center hover:bg-[#3DDC84] hover:text-black hover:border-[#3DDC84] transition-all duration-300 flex items-center justify-center gap-3 group/btn"
                                     >
-                                        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186c-.185.184-.418.25-.642.198-.223-.053-.403-.216-.476-.438L2.03 2.45c-.073-.22.107-.385.33-.437.224-.053.457.013.642.198zM15.348 13.555l2.748 2.748-7.98 4.56c-.68.39-1.516.15-1.906-.53-.39-.68-.15-1.516.53-1.906l6.608-4.872zm2.748-3.11l-2.748 2.748-6.608-4.872c-.68-.39-.92-1.226-.53-1.906.39-.68 1.226-.92 1.906-.53l7.98 4.56zm1.53 1.53l3.636 2.078c.68.39 1.516.15 1.906-.53s.15-1.516-.53-1.906L21.002 9.55c-.25-.143-.547-.143-.797 0l-1.58 1.58z" /></svg>
                                         <span>Google Play</span>
                                     </a>
                                 )}
