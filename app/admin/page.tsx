@@ -82,6 +82,16 @@ export default function Dashboard() {
                                     <div className="text-sm text-gray-900">{app._count.visits}</div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button
+                                        onClick={() => {
+                                            const url = `${window.location.origin}/${app.slug}`;
+                                            navigator.clipboard.writeText(url);
+                                            alert('Link copied: ' + url);
+                                        }}
+                                        className="text-green-600 hover:text-green-900 mr-4"
+                                    >
+                                        Copy
+                                    </button>
                                     <Link href={`/admin/apps/${app.id}`} className="text-blue-600 hover:text-blue-900 mr-4">
                                         Analytics
                                     </Link>
