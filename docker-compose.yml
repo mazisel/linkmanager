@@ -14,5 +14,6 @@ services:
       - NODE_ENV=production
       - NEXTAUTH_URL=http://localhost:4001 # Change this to your domain in Portainer
       - NEXTAUTH_SECRET=changeme # Change this in Portainer
+      - AUTH_TRUST_HOST=true
     volumes:
       - ./db:/app/db
