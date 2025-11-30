@@ -28,6 +28,12 @@ export default function AdminLayout({
                     >
                         New App Link
                     </Link>
+                    <Link
+                        href="/admin/settings"
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                    >
+                        Settings
+                    </Link>
                 </nav>
 
                 <div className="absolute bottom-0 w-full p-4 border-t border-gray-200">

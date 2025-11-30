@@ -76,4 +76,14 @@ model User {
   accounts      Account[]
   sessions      Session[]
   apps          App[]
+  settings      Settings?
+}
+
+model Settings {
+  id              String  @id @default(cuid())
+  userId          String  @unique
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  siteTitle       String  @default("App Showcase")
+  siteDescription String  @default("Discover our latest mobile applications. Download directly for your device.")
+  showAdminLink   Boolean @default(false)
 }

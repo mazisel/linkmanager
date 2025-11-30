@@ -9,6 +9,12 @@ export default async function ShowcasePage() {
         orderBy: { createdAt: 'desc' },
     });
 
+    // Fetch settings (get the first one or default)
+    const settings = await prisma.settings.findFirst();
+    const siteTitle = settings?.siteTitle || "App Showcase";
+    const siteDescription = settings?.siteDescription || "Discover our latest mobile applications. Download directly for your device.";
+    const showAdminLink = settings?.showAdminLink ?? false;
+
     const headersList = await headers();
     const userAgent = headersList.get('user-agent') || '';
 
@@ -33,25 +39,26 @@ export default async function ShowcasePage() {
 
     return (
         <div className="min-h-screen bg-black text-white selection:bg-blue-500 selection:text-white">
-            {/* Header */}
-            <header className="container mx-auto px-4 py-8 flex justify-between items-center border-b border-gray-800">
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-                    App Showcase
-                </h1>
-                <Link
-                    href="/login"
-                    className="text-sm text-gray-500 hover:text-white transition-colors"
-                >
-                    Admin Login
-                </Link>
-            </header>
+            {/* Header - Only show if admin link is enabled or if there's other content (currently empty if no admin link) */}
+            {showAdminLink && (
+                <header className="container mx-auto px-4 py-8 flex justify-end items-center border-b border-gray-800">
+                    <Link
+                        href="/login"
+                        className="text-sm text-gray-500 hover:text-white transition-colors"
+                    >
+                        Admin Login
+                    </Link>
+                </header>
+            )}
 
             {/* Main Content */}
             <main className="container mx-auto px-4 py-12">
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4">{title}</h2>
+                    <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                        {siteTitle}
+                    </h1>
                     <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-                        Discover our latest mobile applications. Download directly for your device.
+                        {siteDescription}
                     </p>
                 </div>
 
@@ -120,7 +127,7 @@ export default async function ShowcasePage() {
 
             {/* Footer */}
             <footer className="container mx-auto px-4 py-8 text-center text-gray-600 text-sm">
-                <p>&copy; {new Date().getFullYear()} App Link Manager. All rights reserved.</p>
+                <p>&copy; {new Date().getFullYear()} {siteTitle}. All rights reserved.</p>
             </footer>
         </div>
     );
