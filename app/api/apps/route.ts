@@ -55,8 +55,11 @@ export async function POST(request: Request) {
             },
         });
         return NextResponse.json(app, { status: 201 });
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error creating app:', error);
+        if (error.code === 'P2002' && error.meta?.target?.includes('slug')) {
+            return NextResponse.json({ error: 'This short link (slug) is already taken. Please choose another one.' }, { status: 409 });
+        }
         return NextResponse.json({ error: error instanceof Error ? error.message : 'Failed to create app' }, { status: 500 });
     }
 }
@@ -78,8 +81,11 @@ export async function PUT(request: Request) {
             },
         });
         return NextResponse.json(updatedApp);
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error updating app:', error);
+        if (error.code === 'P2002' && error.meta?.target?.includes('slug')) {
+            return NextResponse.json({ error: 'This short link (slug) is already taken. Please choose another one.' }, { status: 409 });
+        }
         return NextResponse.json({ error: 'Failed to update app' }, { status: 500 });
     }
 }
