@@ -60,9 +60,9 @@ export default function NewApp() {
                     <label className="block text-sm font-medium text-gray-700 mb-1">Logo URL (Optional)</label>
                     <div className="flex gap-2">
                         <input
-                            type="url"
+                            type="text"
                             className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
-                            placeholder="https://example.com/logo.png"
+                            placeholder="https://example.com/logo.png or /uploads/..."
                             value={formData.logoUrl}
                             onChange={(e) => setFormData({ ...formData, logoUrl: e.target.value })}
                         />
