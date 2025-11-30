@@ -63,64 +63,69 @@ export default function Dashboard() {
             });
     }, []);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return (
+        <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        </div>
+    );
 
     return (
         <div>
-            <div className="flex justify-between items-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-800">Dashboard</h2>
+            <div className="flex justify-between items-center mb-6 md:mb-8">
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Dashboard</h2>
                 <Link
                     href="/admin/new"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
                 >
                     Create New Link
                 </Link>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                        <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                App Name
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Slug
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Total Clicks
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                        {apps.map((app) => (
-                            <tr key={app.id}>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm font-medium text-gray-900">{app.name}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-gray-500">/{app.slug}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-gray-900">{app._count.visits}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <CopyButton slug={app.slug} />
-                                    <Link href={`/admin/apps/${app.id}`} className="text-blue-600 hover:text-blue-900 mr-4">
+            {apps.length === 0 ? (
+                <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
+                    <p className="text-gray-500 mb-4">No apps created yet</p>
+                    <Link
+                        href="/admin/new"
+                        className="text-blue-600 hover:text-blue-700 font-medium"
+                    >
+                        Create your first app link
+                    </Link>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {apps.map((app) => (
+                        <div key={app.id} className="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                            <div className="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 className="font-bold text-gray-900 text-lg">{app.name}</h3>
+                                    <p className="text-gray-500 text-sm font-mono mt-1">/{app.slug}</p>
+                                </div>
+                                <div className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">
+                                    {app._count.visits} clicks
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-4">
+                                <CopyButton slug={app.slug} />
+                                <div className="flex gap-3">
+                                    <Link
+                                        href={`/admin/apps/${app.id}`}
+                                        className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+                                    >
                                         Analytics
                                     </Link>
-                                    <Link href={`/admin/apps/${app.id}/edit`} className="text-indigo-600 hover:text-indigo-900">
+                                    <Link
+                                        href={`/admin/apps/${app.id}/edit`}
+                                        className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors"
+                                    >
                                         Edit
                                     </Link>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

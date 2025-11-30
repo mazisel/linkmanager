@@ -24,6 +24,20 @@ model App {
   visits      Visit[]
   userId      String?
   user        User?    @relation(fields: [userId], references: [id])
+  campaigns   Campaign[]
+}
+
+model Campaign {
+  id          String   @id @default(uuid())
+  name        String
+  appId       String
+  app         App      @relation(fields: [appId], references: [id], onDelete: Cascade)
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmTerm     String?
+  utmContent  String?
+  createdAt   DateTime @default(now())
 }
 
 model Visit {
