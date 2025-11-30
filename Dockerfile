@@ -63,4 +63,7 @@ ENV HOSTNAME "0.0.0.0"
 # We will mount the volume at /app/prisma or /app/db
 # If we mount at /app/prisma, we need to make sure the user can write to it.
 
-CMD ["node", "server.js"]
+COPY --from=builder /app/start.sh ./start.sh
+RUN chmod +x start.sh
+
+CMD ["./start.sh"]
