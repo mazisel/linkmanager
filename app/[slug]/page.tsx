@@ -69,7 +69,7 @@ export default async function Page({
             if (ip !== '127.0.0.1' && ip !== '::1') {
                 const geoRes = await fetch(`http://ip-api.com/json/${ip}?fields=country,city`, {
                     next: { revalidate: 3600 }, // Cache for 1 hour
-                    signal: AbortSignal.timeout(1000), // 1s timeout to not block redirect
+                    signal: AbortSignal.timeout(2000), // 2s timeout
                 });
                 if (geoRes.ok) {
                     const geoData = await geoRes.json();
@@ -79,7 +79,7 @@ export default async function Page({
             }
         } catch (e) {
             // Ignore errors (timeout, etc) to keep redirection fast
-            console.error('Geo lookup failed:', e);
+            // console.error('Geo lookup failed:', e); 
         }
     }
 
