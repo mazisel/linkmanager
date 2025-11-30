@@ -134,11 +134,6 @@ export default async function ShowcasePage() {
                     </div>
                 )}
             </main>
-
-            {/* Footer */}
-            <footer className="container mx-auto px-4 py-8 text-center text-gray-600 text-sm">
-                <p>&copy; {new Date().getFullYear()} {siteTitle}. All rights reserved.</p>
-            </footer>
         </div>
     );
 }
