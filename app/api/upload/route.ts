@@ -25,13 +25,18 @@ export async function POST(request: Request) {
         const extension = file.name.split('.').pop();
         const filename = `logo-${uniqueSuffix}.${extension}`;
 
-        // Save to public/uploads
-        const uploadDir = join(process.cwd(), 'public', 'uploads');
+        // Save to /app/uploads (outside public to avoid caching issues)
+        const uploadDir = join(process.cwd(), 'uploads');
+        // Ensure directory exists
+        try {
+            await require('fs/promises').mkdir(uploadDir, { recursive: true });
+        } catch (e) { }
+
         const path = join(uploadDir, filename);
 
         await writeFile(path, buffer);
 
-        // Return the public URL
+        // Return the URL handled by our custom route
         const url = `/uploads/${filename}`;
 
         return NextResponse.json({ url });
