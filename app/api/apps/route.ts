@@ -34,6 +34,7 @@ export async function POST(request: Request) {
         });
         return NextResponse.json(app, { status: 201 });
     } catch (error) {
-        return NextResponse.json({ error: 'Failed to create app' }, { status: 500 });
+        console.error('Error creating app:', error);
+        return NextResponse.json({ error: error instanceof Error ? error.message : 'Failed to create app' }, { status: 500 });
     }
 }

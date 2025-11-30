@@ -28,10 +28,11 @@ export default function NewApp() {
             if (res.ok) {
                 router.push('/admin');
             } else {
-                alert('Failed to create app');
+                const errorData = await res.json();
+                alert(`Failed to create app: ${errorData.error || 'Unknown error'}`);
             }
         } catch (error) {
-            alert('Error creating app');
+            alert('Error creating app: ' + (error instanceof Error ? error.message : String(error)));
         } finally {
             setLoading(false);
         }
@@ -47,7 +48,7 @@ export default function NewApp() {
                     <input
                         type="text"
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     />
@@ -73,7 +74,7 @@ export default function NewApp() {
                     <label className="block text-sm font-medium text-gray-700 mb-1">Android URL (Google Play)</label>
                     <input
                         type="url"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
                         placeholder="https://play.google.com/store/apps/details?id=..."
                         value={formData.androidUrl}
                         onChange={(e) => setFormData({ ...formData, androidUrl: e.target.value })}
@@ -84,7 +85,7 @@ export default function NewApp() {
                     <label className="block text-sm font-medium text-gray-700 mb-1">iOS URL (App Store)</label>
                     <input
                         type="url"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
                         placeholder="https://apps.apple.com/app/..."
                         value={formData.iosUrl}
                         onChange={(e) => setFormData({ ...formData, iosUrl: e.target.value })}
@@ -95,7 +96,7 @@ export default function NewApp() {
                     <label className="block text-sm font-medium text-gray-700 mb-1">Fallback URL (Optional)</label>
                     <input
                         type="url"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
                         placeholder="https://yourwebsite.com"
                         value={formData.fallbackUrl}
                         onChange={(e) => setFormData({ ...formData, fallbackUrl: e.target.value })}
