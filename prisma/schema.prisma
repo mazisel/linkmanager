@@ -1,0 +1,31 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model App {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  androidUrl  String
+  iosUrl      String
+  fallbackUrl String?
+  createdAt   DateTime @default(now())
+  visits      Visit[]
+}
+
+model Visit {
+  id          String   @id @default(uuid())
+  appId       String
+  app         App      @relation(fields: [appId], references: [id])
+  userAgent   String
+  deviceType  String
+  timestamp   DateTime @default(now())
+}

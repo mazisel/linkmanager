@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  link-manager:
+    container_name: link-manager
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "4000:4000"
+    environment:
+      - DATABASE_URL=file:/app/db/prod.db
+      - NODE_ENV=production
+    volumes:
+      - ./db:/app/db

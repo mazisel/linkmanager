@@ -1,0 +1,39 @@
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+
+export async function GET() {
+    try {
+        const apps = await prisma.app.findMany({
+            orderBy: { createdAt: 'desc' },
+            include: {
+                _count: {
+                    select: { visits: true },
+                },
+            },
+        });
+        return NextResponse.json(apps);
+    } catch (error) {
+        console.error('Error fetching apps:', error);
+        return NextResponse.json({ error: 'Failed to fetch apps' }, { status: 500 });
+    }
+}
+
+export async function POST(request: Request) {
+    try {
+        const body = await request.json();
+        const { name, slug, androidUrl, iosUrl, fallbackUrl } = body;
+
+        const app = await prisma.app.create({
+            data: {
+                name,
+                slug,
+                androidUrl,
+                iosUrl,
+                fallbackUrl,
+            },
+        });
+        return NextResponse.json(app, { status: 201 });
+    } catch (error) {
+        return NextResponse.json({ error: 'Failed to create app' }, { status: 500 });
+    }
+}
