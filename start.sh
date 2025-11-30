@@ -1,6 +1,7 @@
 #!/bin/sh
 # Run migrations
-npx prisma db push
+# Run migrations
+prisma db push
 
 # Start the application
 node server.js

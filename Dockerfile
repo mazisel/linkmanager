@@ -59,6 +59,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/start.sh ./start.sh
 RUN chmod +x start.sh
 
+# Install Prisma globally to ensure correct version (5.22.0) is used
+RUN npm install -g prisma@5.22.0
+
 # USER nextjs
 
 EXPOSE 4000
