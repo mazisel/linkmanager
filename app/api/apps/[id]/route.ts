@@ -1,19 +1,31 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { auth } from '@/lib/auth';
 
 export async function GET(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const session = await auth();
+        if (!session?.user?.id) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
         const { id } = await params;
         const app = await prisma.app.findUnique({
             where: { id },
             include: { visits: true },
         });
+
         if (!app) {
             return NextResponse.json({ error: 'App not found' }, { status: 404 });
         }
+
+        if (app.userId && app.userId !== session.user.id) {
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+        }
+
         return NextResponse.json(app);
     } catch (error) {
         return NextResponse.json({ error: 'Failed to fetch app' }, { status: 500 });
@@ -25,7 +37,20 @@ export async function PUT(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const session = await auth();
+        if (!session?.user?.id) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
         const { id } = await params;
+
+        // Verify ownership
+        const existingApp = await prisma.app.findUnique({ where: { id } });
+        if (!existingApp) return NextResponse.json({ error: 'App not found' }, { status: 404 });
+        if (existingApp.userId && existingApp.userId !== session.user.id) {
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+        }
+
         const body = await request.json();
         const { name, slug, androidUrl, iosUrl, fallbackUrl } = body;
 
@@ -50,7 +75,20 @@ export async function DELETE(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const session = await auth();
+        if (!session?.user?.id) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
         const { id } = await params;
+
+        // Verify ownership
+        const existingApp = await prisma.app.findUnique({ where: { id } });
+        if (!existingApp) return NextResponse.json({ error: 'App not found' }, { status: 404 });
+        if (existingApp.userId && existingApp.userId !== session.user.id) {
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+        }
+
         await prisma.app.delete({
             where: { id },
         });

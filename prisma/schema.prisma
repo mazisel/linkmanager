@@ -18,7 +18,10 @@ model App {
   iosUrl      String
   fallbackUrl String?
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   visits      Visit[]
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id])
 }
 
 model Visit {
@@ -34,4 +37,43 @@ model Visit {
   utmCampaign String?
   utmTerm     String?
   utmContent  String?
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  password      String?   // Added for credentials provider
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  apps          App[]
 }
