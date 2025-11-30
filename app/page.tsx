@@ -81,9 +81,19 @@ export default async function ShowcasePage() {
                             className="group bg-gray-900 border border-gray-800 rounded-2xl p-6 hover:border-gray-700 transition-all hover:shadow-2xl hover:shadow-blue-900/20"
                         >
                             <div className="flex items-start justify-between mb-6">
-                                <div className="w-16 h-16 bg-gradient-to-br from-gray-800 to-black rounded-xl border border-gray-700 flex items-center justify-center text-2xl font-bold text-gray-500 group-hover:text-white transition-colors">
-                                    {app.name.charAt(0)}
-                                </div>
+                                {app.logoUrl ? (
+                                    <div className="w-16 h-16 rounded-xl border border-gray-700 overflow-hidden bg-white">
+                                        <img
+                                            src={app.logoUrl}
+                                            alt={app.name}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="w-16 h-16 bg-gradient-to-br from-gray-800 to-black rounded-xl border border-gray-700 flex items-center justify-center text-2xl font-bold text-gray-500 group-hover:text-white transition-colors">
+                                        {app.name.charAt(0)}
+                                    </div>
+                                )}
                                 <span className="px-3 py-1 bg-gray-800 rounded-full text-xs font-medium text-gray-400 border border-gray-700">
                                     {app.slug}
                                 </span>
