@@ -81,14 +81,13 @@ export default function Dashboard() {
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <div className="text-sm text-gray-900">{app._count.visits}</div>
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <a href={`/${app.slug}`} target="_blank" className="text-blue-600 hover:text-blue-900 mr-4">
-                                        Test Link
-                                    </a>
-                                    <Link href={`/admin/apps/${app.id}`} className="text-indigo-600 hover:text-indigo-900">
+                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <Link href={`/admin/apps/${app.id}`} className="text-blue-600 hover:text-blue-900 mr-4">
                                         Analytics
                                     </Link>
-                                    {/* Add Edit/Delete later */}
+                                    <Link href={`/admin/apps/${app.id}/edit`} className="text-indigo-600 hover:text-indigo-900">
+                                        Edit
+                                    </Link>
                                 </td>
                             </tr>
                         ))}

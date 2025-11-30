@@ -9,6 +9,7 @@ export async function GET(
         const { id } = await params;
         const app = await prisma.app.findUnique({
             where: { id },
+            include: { visits: true },
         });
         if (!app) {
             return NextResponse.json({ error: 'App not found' }, { status: 404 });

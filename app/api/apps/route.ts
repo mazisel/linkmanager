@@ -38,3 +38,25 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: error instanceof Error ? error.message : 'Failed to create app' }, { status: 500 });
     }
 }
+
+export async function PUT(request: Request) {
+    try {
+        const body = await request.json();
+        const { id, name, slug, androidUrl, iosUrl, fallbackUrl } = body;
+
+        const app = await prisma.app.update({
+            where: { id },
+            data: {
+                name,
+                slug,
+                androidUrl,
+                iosUrl,
+                fallbackUrl,
+            },
+        });
+        return NextResponse.json(app);
+    } catch (error) {
+        console.error('Error updating app:', error);
+        return NextResponse.json({ error: 'Failed to update app' }, { status: 500 });
+    }
+}

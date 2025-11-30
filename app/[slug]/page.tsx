@@ -5,10 +5,14 @@ import { userAgent } from 'next/server';
 
 export default async function Page({
     params,
+    searchParams,
 }: {
     params: Promise<{ slug: string }>;
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
     const { slug } = await params;
+    const resolvedSearchParams = await searchParams;
+
     const app = await prisma.app.findUnique({
         where: { slug },
     });
@@ -19,6 +23,14 @@ export default async function Page({
 
     const headersList = await headers();
     const userAgentString = headersList.get('user-agent') || '';
+    const referrer = headersList.get('referer') || null;
+
+    // Extract UTM parameters
+    const utmSource = resolvedSearchParams['utm_source'] as string || null;
+    const utmMedium = resolvedSearchParams['utm_medium'] as string || null;
+    const utmCampaign = resolvedSearchParams['utm_campaign'] as string || null;
+    const utmTerm = resolvedSearchParams['utm_term'] as string || null;
+    const utmContent = resolvedSearchParams['utm_content'] as string || null;
 
     // Simple device detection
     let deviceType = 'Desktop';
@@ -28,13 +40,18 @@ export default async function Page({
         deviceType = 'iOS';
     }
 
-    // Log visit (fire and forget - ideally this should be a background job or separate API call to not block, 
-    // but for simplicity we await it or just let it run. Since it's server component, we should await to ensure it runs)
+    // Log visit
     await prisma.visit.create({
         data: {
             appId: app.id,
             userAgent: userAgentString,
             deviceType: deviceType,
+            referrer,
+            utmSource,
+            utmMedium,
+            utmCampaign,
+            utmTerm,
+            utmContent,
         },
     });
 

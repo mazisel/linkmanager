@@ -28,4 +28,10 @@ model Visit {
   userAgent   String
   deviceType  String
   timestamp   DateTime @default(now())
+  referrer    String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmTerm     String?
+  utmContent  String?
 }
