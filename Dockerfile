@@ -17,6 +17,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Generate Prisma Client
+ENV DATABASE_URL="file:/tmp/dev.db"
 RUN npx prisma generate
 
 # Next.js collects completely anonymous telemetry data about general usage.
