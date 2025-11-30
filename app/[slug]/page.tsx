@@ -57,9 +57,31 @@ export default async function Page({
     const userAgentString = headersList.get('user-agent') || '';
     const referrer = headersList.get('referer') || null;
 
-    // Extract Location from Vercel headers
-    const country = headersList.get('x-vercel-ip-country') || null;
-    const city = headersList.get('x-vercel-ip-city') ? decodeURIComponent(headersList.get('x-vercel-ip-city')!) : null;
+    // Extract Location
+    let country = headersList.get('x-vercel-ip-country') || null;
+    let city = headersList.get('x-vercel-ip-city') ? decodeURIComponent(headersList.get('x-vercel-ip-city')!) : null;
+
+    // If no Vercel headers (e.g. self-hosted), try IP-based lookup
+    if (!country) {
+        try {
+            const ip = headersList.get('x-forwarded-for')?.split(',')[0] || '127.0.0.1';
+            // Skip lookup for localhost to avoid errors/waste
+            if (ip !== '127.0.0.1' && ip !== '::1') {
+                const geoRes = await fetch(`http://ip-api.com/json/${ip}?fields=country,city`, {
+                    next: { revalidate: 3600 }, // Cache for 1 hour
+                    signal: AbortSignal.timeout(1000), // 1s timeout to not block redirect
+                });
+                if (geoRes.ok) {
+                    const geoData = await geoRes.json();
+                    if (geoData.country) country = geoData.country;
+                    if (geoData.city) city = geoData.city;
+                }
+            }
+        } catch (e) {
+            // Ignore errors (timeout, etc) to keep redirection fast
+            console.error('Geo lookup failed:', e);
+        }
+    }
 
     // Extract UTM parameters
     const utmSource = resolvedSearchParams['utm_source'] as string || null;

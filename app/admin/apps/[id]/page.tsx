@@ -50,8 +50,19 @@ export default function AppDetailsPage() {
     const totalVisits = app.visits?.length || 0;
 
     const calculateStats = (key: keyof Visit) => {
-        return app.visits?.reduce((acc: any, visit) => {
-            const value = visit[key] || 'Direct / Unknown';
+        return app.visits.reduce((acc: any, visit: Visit) => {
+            let value = visit[key];
+
+            if (!value) {
+                if (key === 'referrer') {
+                    value = 'Direct / Unknown';
+                } else if (key === 'country' || key === 'city') {
+                    value = 'Unknown Location';
+                } else {
+                    value = 'N/A';
+                }
+            }
+
             acc[value] = (acc[value] || 0) + 1;
             return acc;
         }, {});
