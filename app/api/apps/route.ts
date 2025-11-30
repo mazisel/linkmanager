@@ -33,7 +33,7 @@ export async function POST(request: Request) {
         }
 
         const body = await request.json();
-        const { name, slug, description, androidUrl, iosUrl, fallbackUrl, logoUrl } = body;
+        const { name, slug, description, androidUrl, iosUrl, fallbackUrl, logoUrl, ogTitle, ogDescription, ogImage } = body;
 
         // Basic validation
         if (!name || !slug) {
@@ -52,6 +52,9 @@ export async function POST(request: Request) {
                 iosUrl,
                 fallbackUrl,
                 logoUrl,
+                ogTitle,
+                ogDescription,
+                ogImage,
                 userId: session.user.id,
             },
         });
@@ -68,7 +71,7 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
     try {
         const body = await request.json();
-        const { id, name, slug, description, androidUrl, iosUrl, fallbackUrl, logoUrl } = body;
+        const { id, name, slug, description, androidUrl, iosUrl, fallbackUrl, logoUrl, ogTitle, ogDescription, ogImage } = body;
 
         const updatedApp = await prisma.app.update({
             where: { id },
@@ -80,6 +83,9 @@ export async function PUT(request: Request) {
                 iosUrl,
                 fallbackUrl,
                 logoUrl,
+                ogTitle,
+                ogDescription,
+                ogImage,
             },
         });
         return NextResponse.json(updatedApp);

@@ -13,6 +13,8 @@ interface Visit {
     utmSource?: string;
     utmMedium?: string;
     utmCampaign?: string;
+    country?: string;
+    city?: string;
 }
 
 interface AppDetails {
@@ -57,6 +59,8 @@ export default function AppDetailsPage() {
 
     const deviceStats = calculateStats('deviceType');
     const referrerStats = calculateStats('referrer');
+    const countryStats = calculateStats('country');
+    const cityStats = calculateStats('city');
     const utmSourceStats = calculateStats('utmSource');
     const utmMediumStats = calculateStats('utmMedium');
     const utmCampaignStats = calculateStats('utmCampaign');
@@ -124,6 +128,8 @@ export default function AppDetailsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                 {renderStatSection('Device Breakdown', Smartphone, deviceStats, 'bg-indigo-500')}
                 {renderStatSection('Top Referrers', Globe, referrerStats, 'bg-green-500')}
+                {renderStatSection('Top Countries', Globe, countryStats, 'bg-teal-500')}
+                {renderStatSection('Top Cities', Globe, cityStats, 'bg-cyan-500')}
                 {renderStatSection('UTM Sources', Layers, utmSourceStats, 'bg-purple-500')}
                 {renderStatSection('UTM Mediums', Hash, utmMediumStats, 'bg-orange-500')}
                 {renderStatSection('UTM Campaigns', Tag, utmCampaignStats, 'bg-pink-500')}

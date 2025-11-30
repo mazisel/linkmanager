@@ -139,7 +139,7 @@ export default function CampaignManager({ appId, appSlug }: CampaignManagerProps
                                 type="text"
                                 required
                                 placeholder="e.g. Summer Sale Facebook"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
                                 value={newCampaign.name}
                                 onChange={(e) => setNewCampaign({ ...newCampaign, name: e.target.value })}
                             />
@@ -150,7 +150,7 @@ export default function CampaignManager({ appId, appSlug }: CampaignManagerProps
                                 <input
                                     type="text"
                                     placeholder="e.g. facebook, google"
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
                                     value={newCampaign.utmSource}
                                     onChange={(e) => setNewCampaign({ ...newCampaign, utmSource: e.target.value })}
                                 />
@@ -160,7 +160,7 @@ export default function CampaignManager({ appId, appSlug }: CampaignManagerProps
                                 <input
                                     type="text"
                                     placeholder="e.g. cpc, banner"
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
                                     value={newCampaign.utmMedium}
                                     onChange={(e) => setNewCampaign({ ...newCampaign, utmMedium: e.target.value })}
                                 />
@@ -170,7 +170,7 @@ export default function CampaignManager({ appId, appSlug }: CampaignManagerProps
                                 <input
                                     type="text"
                                     placeholder="e.g. summer_sale"
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
                                     value={newCampaign.utmCampaign}
                                     onChange={(e) => setNewCampaign({ ...newCampaign, utmCampaign: e.target.value })}
                                 />
@@ -180,7 +180,7 @@ export default function CampaignManager({ appId, appSlug }: CampaignManagerProps
                                 <input
                                     type="text"
                                     placeholder="e.g. running shoes"
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
                                     value={newCampaign.utmTerm}
                                     onChange={(e) => setNewCampaign({ ...newCampaign, utmTerm: e.target.value })}
                                 />
@@ -233,8 +233,8 @@ export default function CampaignManager({ appId, appSlug }: CampaignManagerProps
                                     <button
                                         onClick={() => handleCopy(campaign)}
                                         className={`p-2 rounded-lg transition-colors ${copiedId === campaign.id
-                                                ? 'bg-green-100 text-green-700'
-                                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                            ? 'bg-green-100 text-green-700'
+                                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                             }`}
                                         title="Copy Link"
                                     >

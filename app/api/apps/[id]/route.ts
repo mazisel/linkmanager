@@ -52,7 +52,7 @@ export async function PUT(
         }
 
         const body = await request.json();
-        const { name, slug, description, androidUrl, iosUrl, fallbackUrl } = body;
+        const { name, slug, description, androidUrl, iosUrl, fallbackUrl, ogTitle, ogDescription, ogImage } = body;
 
         const app = await prisma.app.update({
             where: { id },
@@ -63,6 +63,9 @@ export async function PUT(
                 androidUrl,
                 iosUrl,
                 fallbackUrl,
+                ogTitle,
+                ogDescription,
+                ogImage,
             },
         });
         return NextResponse.json(app);

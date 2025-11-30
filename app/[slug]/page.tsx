@@ -2,6 +2,38 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { userAgent } from 'next/server';
+import { Metadata } from 'next';
+
+export async function generateMetadata(
+    { params }: { params: Promise<{ slug: string }> }
+): Promise<Metadata> {
+    const { slug } = await params;
+    const app = await prisma.app.findUnique({
+        where: { slug },
+    });
+
+    if (!app) {
+        return {
+            title: 'App Not Found',
+        };
+    }
+
+    return {
+        title: app.ogTitle || app.name,
+        description: app.ogDescription || app.description,
+        openGraph: {
+            title: app.ogTitle || app.name,
+            description: app.ogDescription || app.description || undefined,
+            images: app.ogImage ? [{ url: app.ogImage }] : undefined,
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: app.ogTitle || app.name,
+            description: app.ogDescription || app.description || undefined,
+            images: app.ogImage ? [app.ogImage] : undefined,
+        },
+    };
+}
 
 export default async function Page({
     params,
@@ -24,6 +56,10 @@ export default async function Page({
     const headersList = await headers();
     const userAgentString = headersList.get('user-agent') || '';
     const referrer = headersList.get('referer') || null;
+
+    // Extract Location from Vercel headers
+    const country = headersList.get('x-vercel-ip-country') || null;
+    const city = headersList.get('x-vercel-ip-city') ? decodeURIComponent(headersList.get('x-vercel-ip-city')!) : null;
 
     // Extract UTM parameters
     const utmSource = resolvedSearchParams['utm_source'] as string || null;
@@ -52,6 +88,8 @@ export default async function Page({
             utmCampaign,
             utmTerm,
             utmContent,
+            country,
+            city,
         },
     });
 

@@ -18,7 +18,11 @@ model App {
   logoUrl     String?
   androidUrl  String?
   iosUrl      String?
+
   fallbackUrl String?
+  ogTitle       String?
+  ogDescription String?
+  ogImage       String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
   visits      Visit[]
@@ -53,6 +57,8 @@ model Visit {
   utmCampaign String?
   utmTerm     String?
   utmContent  String?
+  country     String?
+  city        String?
 }
 
 model Account {

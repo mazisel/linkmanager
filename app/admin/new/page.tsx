@@ -13,6 +13,9 @@ export default function NewApp() {
         androidUrl: '',
         iosUrl: '',
         fallbackUrl: '',
+        ogTitle: '',
+        ogDescription: '',
+        ogImage: '',
     });
     const [loading, setLoading] = useState(false);
 
@@ -158,6 +161,74 @@ export default function NewApp() {
                         value={formData.fallbackUrl}
                         onChange={(e) => setFormData({ ...formData, fallbackUrl: e.target.value })}
                     />
+                </div>
+
+                <div className="border-t border-gray-200 pt-6 mt-6">
+                    <h3 className="text-lg font-bold text-gray-800 mb-4">Social Media Preview (OG Tags)</h3>
+                    <div className="space-y-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Social Title</label>
+                            <input
+                                type="text"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
+                                placeholder="Title shown on WhatsApp/Twitter"
+                                value={formData.ogTitle}
+                                onChange={(e) => setFormData({ ...formData, ogTitle: e.target.value })}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Social Description</label>
+                            <textarea
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black h-20"
+                                placeholder="Description shown on social media..."
+                                value={formData.ogDescription}
+                                onChange={(e) => setFormData({ ...formData, ogDescription: e.target.value })}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Social Image URL</label>
+                            <div className="flex gap-2">
+                                <input
+                                    type="text"
+                                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
+                                    placeholder="https://example.com/social-image.png"
+                                    value={formData.ogImage}
+                                    onChange={(e) => setFormData({ ...formData, ogImage: e.target.value })}
+                                />
+                                <label className="cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg border border-gray-300 transition-colors flex items-center gap-2">
+                                    <span>Upload</span>
+                                    <input
+                                        type="file"
+                                        className="hidden"
+                                        accept="image/*"
+                                        onChange={async (e) => {
+                                            const file = e.target.files?.[0];
+                                            if (!file) return;
+
+                                            const data = new FormData();
+                                            data.append('file', file);
+
+                                            try {
+                                                const res = await fetch('/api/upload', {
+                                                    method: 'POST',
+                                                    body: data,
+                                                });
+                                                const json = await res.json();
+                                                if (json.url) {
+                                                    setFormData({ ...formData, ogImage: json.url });
+                                                } else {
+                                                    alert('Upload failed');
+                                                }
+                                            } catch (err) {
+                                                console.error(err);
+                                                alert('Upload error');
+                                            }
+                                        }}
+                                    />
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="pt-4">
