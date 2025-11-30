@@ -68,7 +68,7 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
     try {
         const body = await request.json();
-        const { name, slug, description, androidUrl, iosUrl, fallbackUrl, logoUrl } = body;
+        const { id, name, slug, description, androidUrl, iosUrl, fallbackUrl, logoUrl } = body;
 
         const updatedApp = await prisma.app.update({
             where: { id },
