@@ -17,3 +17,4 @@ services:
       - AUTH_TRUST_HOST=true
     volumes:
       - ./db:/app/db
+      - ./uploads:/app/public/uploads
