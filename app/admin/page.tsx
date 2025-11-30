@@ -14,6 +14,32 @@ interface App {
     };
 }
 
+function CopyButton({ slug }: { slug: string }) {
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = async () => {
+        const url = `${window.location.origin}/${slug}`;
+        try {
+            await navigator.clipboard.writeText(url);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch (err) {
+            console.error('Failed to copy:', err);
+            // Fallback for non-secure contexts or failures
+            prompt('Copy this link:', url);
+        }
+    };
+
+    return (
+        <button
+            onClick={handleCopy}
+            className={`${copied ? 'text-green-700 font-bold' : 'text-green-600 hover:text-green-900'} mr-4 transition-colors`}
+        >
+            {copied ? 'Copied!' : 'Copy'}
+        </button>
+    );
+}
+
 export default function Dashboard() {
     const [apps, setApps] = useState<App[]>([]);
     const [loading, setLoading] = useState(true);
@@ -82,16 +108,7 @@ export default function Dashboard() {
                                     <div className="text-sm text-gray-900">{app._count.visits}</div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button
-                                        onClick={() => {
-                                            const url = `${window.location.origin}/${app.slug}`;
-                                            navigator.clipboard.writeText(url);
-                                            alert('Link copied: ' + url);
-                                        }}
-                                        className="text-green-600 hover:text-green-900 mr-4"
-                                    >
-                                        Copy
-                                    </button>
+                                    <CopyButton slug={app.slug} />
                                     <Link href={`/admin/apps/${app.id}`} className="text-blue-600 hover:text-blue-900 mr-4">
                                         Analytics
                                     </Link>
