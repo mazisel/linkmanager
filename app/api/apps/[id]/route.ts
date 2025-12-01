@@ -13,9 +13,25 @@ export async function GET(
         }
 
         const { id } = await params;
+        const url = new URL(request.url);
+        const startDate = url.searchParams.get('startDate');
+        const endDate = url.searchParams.get('endDate');
+
+        const visitsWhere: any = {};
+        if (startDate && endDate) {
+            visitsWhere.timestamp = {
+                gte: new Date(startDate),
+                lte: new Date(endDate),
+            };
+        }
+
         const app = await prisma.app.findUnique({
             where: { id },
-            include: { visits: true },
+            include: { 
+                visits: {
+                    where: visitsWhere
+                } 
+            },
         });
 
         if (!app) {

@@ -29,15 +29,36 @@ export default function AppDetailsPage() {
     const { id } = params;
     const [app, setApp] = useState<AppDetails | null>(null);
     const [loading, setLoading] = useState(true);
+    const [dateRange, setDateRange] = useState('30d');
 
     useEffect(() => {
-        fetch(`/api/apps/${id}`)
+        setLoading(true);
+        const endDate = new Date();
+        let startDate = new Date();
+
+        if (dateRange === '7d') {
+            startDate.setDate(endDate.getDate() - 7);
+        } else if (dateRange === '30d') {
+            startDate.setDate(endDate.getDate() - 30);
+        } else if (dateRange === '90d') {
+            startDate.setDate(endDate.getDate() - 90);
+        } else {
+            // All time - set a very old date
+            startDate = new Date(0);
+        }
+
+        const queryParams = new URLSearchParams({
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
+        });
+
+        fetch(`/api/apps/${id}?${queryParams}`)
             .then((res) => res.json())
             .then((data) => {
                 setApp(data);
                 setLoading(false);
             });
-    }, [id]);
+    }, [id, dateRange]);
 
     if (loading) return (
         <div className="flex justify-center items-center h-64">
@@ -133,6 +154,28 @@ export default function AppDetailsPage() {
                         <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">Total Clicks</p>
                         <p className="text-2xl font-bold text-gray-900 leading-none">{totalVisits}</p>
                     </div>
+                </div>
+            </div>
+
+            <div className="flex justify-end">
+                <div className="inline-flex bg-gray-100 p-1 rounded-lg">
+                    {[
+                        { label: '7 Days', value: '7d' },
+                        { label: '30 Days', value: '30d' },
+                        { label: '90 Days', value: '90d' },
+                        { label: 'All Time', value: 'all' },
+                    ].map((range) => (
+                        <button
+                            key={range.value}
+                            onClick={() => setDateRange(range.value)}
+                            className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${dateRange === range.value
+                                    ? 'bg-white text-gray-900 shadow-sm'
+                                    : 'text-gray-500 hover:text-gray-900'
+                                }`}
+                        >
+                            {range.label}
+                        </button>
+                    ))}
                 </div>
             </div>
 
