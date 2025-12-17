@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { signOut } from 'next-auth/react';
-import { LayoutDashboard, Plus, Settings, LogOut } from 'lucide-react';
+import { LayoutDashboard, Plus, Settings, LogOut, PieChart } from 'lucide-react';
 
 export default function AdminLayout({
     children,
@@ -16,6 +16,7 @@ export default function AdminLayout({
 
     const navItems = [
         { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+        { href: '/admin/analytics', label: 'Analytics', icon: PieChart },
         { href: '/admin/new', label: 'New Link', icon: Plus },
         { href: '/admin/settings', label: 'Settings', icon: Settings },
     ];
@@ -33,8 +34,8 @@ export default function AdminLayout({
                             key={item.href}
                             href={item.href}
                             className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${isActive(item.href)
-                                    ? 'bg-blue-50 text-blue-600 font-medium'
-                                    : 'text-gray-700 hover:bg-gray-100'
+                                ? 'bg-blue-50 text-blue-600 font-medium'
+                                : 'text-gray-700 hover:bg-gray-100'
                                 }`}
                         >
                             <item.icon size={20} />

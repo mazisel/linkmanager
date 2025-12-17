@@ -16,6 +16,7 @@ export default function NewApp() {
         ogTitle: '',
         ogDescription: '',
         ogImage: '',
+        ga4PropertyId: '',
     });
     const [loading, setLoading] = useState(false);
 
@@ -161,6 +162,18 @@ export default function NewApp() {
                         value={formData.fallbackUrl}
                         onChange={(e) => setFormData({ ...formData, fallbackUrl: e.target.value })}
                     />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Google Analytics 4 Property ID (Optional)</label>
+                    <input
+                        type="text"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
+                        placeholder="123456789"
+                        value={formData.ga4PropertyId}
+                        onChange={(e) => setFormData({ ...formData, ga4PropertyId: e.target.value })}
+                    />
+                    <p className="text-xs text-gray-500 mt-1">If provided, real-time analytics for this specific property will be shown in the dashboard.</p>
                 </div>
 
                 <div className="border-t border-gray-200 pt-6 mt-6">

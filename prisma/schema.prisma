@@ -18,6 +18,8 @@ model App {
   logoUrl     String?
   androidUrl  String?
   iosUrl      String?
+  ga4PropertyId String?
+
 
   fallbackUrl String?
   ogTitle       String?

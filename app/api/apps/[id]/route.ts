@@ -27,10 +27,10 @@ export async function GET(
 
         const app = await prisma.app.findUnique({
             where: { id },
-            include: { 
+            include: {
                 visits: {
                     where: visitsWhere
-                } 
+                }
             },
         });
 
@@ -68,7 +68,7 @@ export async function PUT(
         }
 
         const body = await request.json();
-        const { name, slug, description, androidUrl, iosUrl, fallbackUrl, ogTitle, ogDescription, ogImage } = body;
+        const { name, slug, description, androidUrl, iosUrl, fallbackUrl, ogTitle, ogDescription, ogImage, ga4PropertyId } = body;
 
         const app = await prisma.app.update({
             where: { id },
@@ -82,6 +82,7 @@ export async function PUT(
                 ogTitle,
                 ogDescription,
                 ogImage,
+                ga4PropertyId,
             },
         });
         return NextResponse.json(app);
