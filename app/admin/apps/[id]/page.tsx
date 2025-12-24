@@ -5,27 +5,22 @@ import { useParams } from 'next/navigation';
 import { Smartphone, Globe, MousePointer, Layers, Hash, Tag } from 'lucide-react';
 import CampaignManager from '../../components/CampaignManager';
 
-interface Visit {
-    id: string;
-    deviceType: string;
-    timestamp: string;
-    referrer?: string;
-    utmSource?: string;
-    utmMedium?: string;
-    utmCampaign?: string;
-    country?: string;
-    city?: string;
-}
-
 interface AppDetails {
     id: string;
     name: string;
     slug: string;
     ga4PropertyId?: string;
-    visits: Visit[];
+    stats: {
+        totalVisits: number;
+        deviceType: Record<string, number>;
+        referrer: Record<string, number>;
+        country: Record<string, number>;
+        city: Record<string, number>;
+        utmSource: Record<string, number>;
+        utmMedium: Record<string, number>;
+        utmCampaign: Record<string, number>;
+    };
 }
-
-
 
 export default function AppDetailsPage() {
     const params = useParams();
@@ -70,35 +65,8 @@ export default function AppDetailsPage() {
     );
     if (!app) return <div className="p-8 text-center">App not found</div>;
 
-    // Calculate stats
-    const totalVisits = app.visits?.length || 0;
-
-    const calculateStats = (key: keyof Visit) => {
-        return app.visits.reduce((acc: any, visit: Visit) => {
-            let value = visit[key];
-
-            if (!value) {
-                if (key === 'referrer') {
-                    value = 'Direct / Unknown';
-                } else if (key === 'country' || key === 'city') {
-                    value = 'Unknown Location';
-                } else {
-                    value = 'N/A';
-                }
-            }
-
-            acc[value] = (acc[value] || 0) + 1;
-            return acc;
-        }, {});
-    };
-
-    const deviceStats = calculateStats('deviceType');
-    const referrerStats = calculateStats('referrer');
-    const countryStats = calculateStats('country');
-    const cityStats = calculateStats('city');
-    const utmSourceStats = calculateStats('utmSource');
-    const utmMediumStats = calculateStats('utmMedium');
-    const utmCampaignStats = calculateStats('utmCampaign');
+    // Use stats from server
+    const { totalVisits, deviceType: deviceStats, referrer: referrerStats, country: countryStats, city: cityStats, utmSource: utmSourceStats, utmMedium: utmMediumStats, utmCampaign: utmCampaignStats } = app.stats;
 
     const renderProgressBar = (count: number, total: number, colorClass: string = 'bg-blue-600') => (
         <div className="w-full bg-gray-100 rounded-full h-2 mt-1.5">
