@@ -99,6 +99,83 @@ export default function SettingsPage() {
                     </label>
                 </div>
 
+                <div className="pt-8 border-t border-gray-100">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4">Data Management</h3>
+                    <div className="space-y-4">
+                        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                            <h4 className="font-medium text-gray-700 mb-2">Export Data</h4>
+                            <p className="text-sm text-gray-500 mb-4">Download a backup of all application data.</p>
+                            <button
+                                type="button"
+                                onClick={async () => {
+                                    try {
+                                        const res = await fetch('/api/admin/data');
+                                        if (!res.ok) throw new Error('Export failed');
+                                        const blob = await res.blob();
+                                        const url = window.URL.createObjectURL(blob);
+                                        const a = document.createElement('a');
+                                        a.href = url;
+                                        a.download = `backup-${new Date().toISOString().split('T')[0]}.json`;
+                                        document.body.appendChild(a);
+                                        a.click();
+                                        document.body.removeChild(a);
+                                        window.URL.revokeObjectURL(url);
+                                    } catch (err) {
+                                        console.error(err);
+                                        alert('Failed to export data');
+                                    }
+                                }}
+                                className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-sm font-medium"
+                            >
+                                Export JSON
+                            </button>
+                        </div>
+
+                        <div className="p-4 bg-red-50 rounded-lg border border-red-100">
+                            <h4 className="font-medium text-red-800 mb-2">Import Data</h4>
+                            <p className="text-sm text-red-600 mb-4">
+                                ⚠️ This will <strong>DELETE ALL EXISTING DATA</strong> and replace it with the imported file. This action cannot be undone.
+                            </p>
+                            <div className="flex gap-4 items-center">
+                                <input
+                                    type="file"
+                                    accept=".json"
+                                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-100 file:text-red-700 hover:file:bg-red-200"
+                                    onChange={async (e) => {
+                                        const file = e.target.files?.[0];
+                                        if (!file) return;
+
+                                        if (!confirm('Are you absolutely sure? This will wipe the database and import this file.')) {
+                                            e.target.value = '';
+                                            return;
+                                        }
+
+                                        try {
+                                            const text = await file.text();
+                                            const json = JSON.parse(text);
+
+                                            const res = await fetch('/api/admin/data', {
+                                                method: 'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify(json),
+                                            });
+
+                                            if (!res.ok) throw new Error('Import failed');
+
+                                            alert('Data imported successfully! The page will refresh.');
+                                            window.location.reload();
+                                        } catch (err) {
+                                            console.error(err);
+                                            alert('Failed to import data: ' + (err as Error).message);
+                                        }
+                                        e.target.value = '';
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div className="pt-4">
                     <button
                         type="submit"

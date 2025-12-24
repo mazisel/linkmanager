@@ -46,18 +46,30 @@ export default function Dashboard() {
 
     useEffect(() => {
         fetch('/api/apps')
-            .then((res) => res.json())
+            .then(async (res) => {
+                if (!res.ok) {
+                    const text = await res.text();
+                    try {
+                        const json = JSON.parse(text);
+                        throw new Error(json.error || `API Error: ${res.status}`);
+                    } catch (e) {
+                        throw new Error(`API Error: ${res.status} - ${text}`);
+                    }
+                }
+                return res.json();
+            })
             .then((data) => {
                 if (Array.isArray(data)) {
                     setApps(data);
                 } else {
-                    console.error('Failed to fetch apps:', data);
+                    console.error('Unexpected API response format:', data);
                     setApps([]);
                 }
                 setLoading(false);
             })
             .catch((err) => {
                 console.error('Error fetching apps:', err);
+                // Optionally show a notification to the user
                 setApps([]);
                 setLoading(false);
             });
