@@ -41,3 +41,8 @@ yarn-error.log*
 next-env.d.ts
 
 /app/generated/prisma
+
+# secrets
+learnai-revenuecat-1d370d460cb4.json
+*.db
+*.db-journal

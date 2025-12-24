@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { Smartphone, Globe, MousePointer, Layers, Hash, Tag, Activity } from 'lucide-react';
+import { Smartphone, Globe, MousePointer, Layers, Hash, Tag } from 'lucide-react';
 import CampaignManager from '../../components/CampaignManager';
 
 interface Visit {
@@ -25,81 +25,7 @@ interface AppDetails {
     visits: Visit[];
 }
 
-function RealtimeWidget({ propertyId }: { propertyId?: string }) {
-    const [data, setData] = useState<{ activeUsers: number; configured: boolean } | null>(null);
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchData = () => {
-            const endpoint = propertyId
-                ? `/api/analytics/realtime?propertyId=${propertyId}`
-                : '/api/analytics/realtime';
-
-            fetch(endpoint)
-                .then((res) => res.json())
-                .then((data) => {
-                    setData(data);
-                    setLoading(false);
-                })
-                .catch((err) => {
-                    console.error('Failed to fetch realtime data', err);
-                    setLoading(false);
-                });
-        };
-
-        fetchData();
-        const interval = setInterval(fetchData, 30000); // Poll every 30s
-        return () => clearInterval(interval);
-    }, []);
-
-    if (loading) return (
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 animate-pulse">
-            <div className="h-6 bg-gray-200 rounded w-1/4 mb-4"></div>
-            <div className="h-10 bg-gray-200 rounded w-1/6"></div>
-        </div>
-    );
-
-    if (!data?.configured) return (
-        <div className="bg-amber-50 p-6 rounded-xl border border-amber-200">
-            <div className="flex items-center gap-3 text-amber-800 mb-2">
-                <Activity size={24} />
-                <h3 className="font-bold text-lg">Google Analytics Real-time</h3>
-            </div>
-            <p className="text-amber-700">
-                To view real-time data, please configure your Google Analytics credentials in the .env file.
-            </p>
-        </div>
-    );
-
-    return (
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 overflow-hidden relative">
-            <div className="absolute top-0 right-0 p-4 opacity-10">
-                <Activity size={100} className="text-blue-600" />
-            </div>
-            <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2 bg-blue-100 text-blue-600 rounded-lg animate-pulse">
-                        <Activity size={24} />
-                    </div>
-                    <h3 className="font-bold text-lg text-gray-800">Real-time Active Users</h3>
-                </div>
-                <div className="flex items-end gap-3 mt-4">
-                    <span className="text-5xl font-bold text-gray-900 leading-none">
-                        {data.activeUsers}
-                    </span>
-                    <span className="text-gray-500 font-medium mb-1">right now</span>
-                </div>
-                <div className="mt-4 flex items-center gap-2 text-sm text-green-600 font-medium">
-                    <span className="relative flex h-3 w-3">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                    </span>
-                    Live updates active
-                </div>
-            </div>
-        </div>
-    );
-}
 
 export default function AppDetailsPage() {
     const params = useParams();
@@ -266,11 +192,6 @@ export default function AppDetailsPage() {
                 {renderStatSection('UTM Campaigns', Tag, utmCampaignStats, 'bg-pink-500')}
             </div>
 
-            <div className="grid grid-cols-1 gap-6">
-                <RealtimeWidget propertyId={app.ga4PropertyId} />
-            </div>
-
-            <CampaignManager appId={app.id} appSlug={app.slug} />
         </div>
     );
 }
