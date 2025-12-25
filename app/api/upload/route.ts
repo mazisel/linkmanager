@@ -40,8 +40,16 @@ export async function POST(request: Request) {
         const url = `/uploads/${filename}`;
 
         return NextResponse.json({ url });
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error uploading file:', error);
-        return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+        console.error('Upload info:', {
+            cwd: process.cwd(),
+            errorName: error.name,
+            errorMessage: error.message,
+            stack: error.stack
+        });
+        return NextResponse.json({
+            error: `Upload failed: ${error.message}`
+        }, { status: 500 });
     }
 }
