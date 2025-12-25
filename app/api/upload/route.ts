@@ -4,6 +4,7 @@ import { join } from 'path';
 import { auth } from '@/lib/auth';
 
 export async function POST(request: Request) {
+    console.log('UPLOAD REQUEST RECEIVED - HEADERS:', Object.fromEntries(request.headers));
     try {
         const session = await auth();
         if (!session?.user?.id) {
