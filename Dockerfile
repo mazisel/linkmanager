@@ -57,6 +57,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 # Copy prisma schema for migrations
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/start.sh ./start.sh
+COPY --from=builder --chown=nextjs:nodejs /app/check-env.js ./check-env.js
 RUN chmod +x start.sh
 
 # Install Prisma globally to ensure correct version (5.22.0) is used
