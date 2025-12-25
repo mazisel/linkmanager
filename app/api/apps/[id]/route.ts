@@ -176,6 +176,7 @@ export async function PUT(
                 ogDescription,
                 ogImage,
                 ga4PropertyId,
+                logoUrl: body.logoUrl,
             },
         });
         return NextResponse.json(app);
