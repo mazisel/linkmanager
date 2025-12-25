@@ -6,7 +6,7 @@ echo "Starting deployment..."
 # Run migrations
 echo "Running database migrations..."
 echo "DATABASE_URL: $DATABASE_URL"
-npx prisma db push --accept-data-loss --skip-generate
+prisma db push --accept-data-loss --skip-generate
 
 # Check if DB exists and has tables (debug)
 if [ -f "/app/db/prod.db" ]; then
