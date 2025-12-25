@@ -16,6 +16,9 @@ else
     echo "Database file NOT found!"
 fi
 
+# Check environment settings
+node check-env.js
+
 # Start the application
 echo "Starting Next.js server..."
 node server.js
