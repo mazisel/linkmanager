@@ -6,13 +6,19 @@ import { auth } from '@/lib/auth';
 export async function POST(request: Request) {
     console.log('UPLOAD REQUEST RECEIVED - HEADERS:', Object.fromEntries(request.headers));
     try {
+        console.log('1. Calling auth()...');
         const session = await auth();
+        console.log('2. Auth result:', session?.user?.id ? 'Authorized' : 'Unauthorized');
+
         if (!session?.user?.id) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
+        console.log('3. parsing formData()...');
         const formData = await request.formData();
+        console.log('4. formData parsed');
         const file = formData.get('file') as File;
+        console.log('5. File retrieved:', file?.name, file?.size);
 
         if (!file) {
             return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
